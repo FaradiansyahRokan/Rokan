@@ -251,10 +251,10 @@ header .role {
 
 
 #about-panel {
-    position: fixed;
+     position: fixed;
     inset: 0;
-    z-index: 20;
-    background: rgba(0,0,0,0.7);
+    z-index: 88888;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -270,7 +270,10 @@ header .role {
 
 .about-content {
     width: 90%;
-    max-width: 800px;
+    overflow: hidden;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
     background: var(--panel-bg);
     border: 1px solid var(--panel-border);
     backdrop-filter: blur(20px);
