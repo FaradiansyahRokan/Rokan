@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rokan.</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/R.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ELEMEN BARU: Layar Pembuka -->
+    <div id="start-screen">
+        <div class="start-content">
+            <h1>Selamat Datang</h1>
+            <p>Jelajahi portofolio interaktif 3D saya.</p>
+            <button id="start-btn">Mulai</button>
+        </div>
+    </div>
+
+    <div id="three-wrap">
+        <canvas id="three-canvas"></canvas>
+    </div>
+    
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <h1 id="animated-title"></h1>
+
+    <div id="audio-control" class="audio-control">
+        <i id="audio-icon" class="audio-icon">♪</i>
+    </div>
+
+    <audio id="bg-audio" loop>
+        <source src="assets/mixkit-finding-myself-993.mp3" type="audio/mp3">
+    </audio>
+    <audio id="audio-hover" preload="auto">
+        <source src="/assets/hover.wav" type="audio/wav">
+    </audio>
+    <audio id="audio-open" preload="auto">
+        <source src="assets/click.mp3" type="audio/mp3">
+    </audio>
+    <audio id="outro-sound" preload="auto">
+        <source src="assets/outro.wav" type="audio/wav">
+    </audio>
+    <audio id="audio-intro" preload="auto">
+        <source src="assets/intro.wav" type="audio/wav">
+    </audio>
+
+    <div id="ui-overlay">
+        <header>
+            <div class="name">Rokan Subhi Faradiansyah</div>
+            <div class="role">Fullstack Developer</div>
+        </header>
+        <footer>
+            <div class="contact">rokansubhi.f@gmail.com</div>
+            <div class="social-links">
+                <a href="https://github.com/faradiansyahrokan">GitHub</a>
+                <a href="https://www.linkedin.com/in/faradiansyah-rokan-a18480248/">LinkedIn</a>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="article-panel">
+        <div class="article-content">
+            <button id="close-article-btn">&times;</button>
+            <div class="kicker" id="article-kicker"></div>
+            <h2 id="article-title"></h2>
+            
+            <div id="article-image-container" class="article-image-container">
+                <img id="article-image" src="" alt="Dokumentasi Proyek">
+            </div>
+
+            <h4>Deskripsi</h4>
+            <p id="article-desc"></p>
+
+            <div id="article-features-container">
+                <h4>Fitur Utama</h4>
+                <p id="article-features"></p>
+            </div>
+
+            <h4>Tech Stack</h4>
+            <div class="tags" id="article-tags"></div>
+        </div>
+    </div>
+
+    <div id="about-panel" class="special-panel">
+        <div class="about-content">
+            <button id="close-about-btn">&times;</button>
+            <div class="about-header">
+                <img id="about-image" src="" alt="Foto Profil">
+                <div class="about-text-container">
+                    <h2 id="about-title"></h2>
+                    <div class="kicker" id="about-kicker"></div>
+                </div>
+            </div>
+            <div class="about-body">
+                <p id="about-desc"></p>
+                <div class="about-features-container">
+                    <h4>Experience</h4>
+                    <pre id="about-exp"></pre>
+                </div>
+                <div class="about-features-container">
+                    <h4>Skills</h4>
+                    <p id="about-skills"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cert-panel" class="modal-panel">
+        <div class="modal-content cert-content">
+            <button id="close-cert-btn" class="close-btn">×</button>
+            <div class="content-header">
+                <span id="cert-kicker" class="kicker"></span>
+                <h2 id="cert-title"></h2>
+            </div>
+            <div class="content-body">
+                <h3>Daftar Sertifikat:</h3>
+                <ul id="cert-items-container"></ul>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/",
+                "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
+            }
+        }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

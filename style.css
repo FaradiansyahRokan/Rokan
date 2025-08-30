@@ -1,0 +1,546 @@
+:root {
+    --bg: #000000;
+    --text-light: #ffffff;
+    --text-dim: #a0a0a0;
+    --accent: #ffffff;
+    --panel-bg: rgba(10, 10, 10, 0.8);
+    --panel-border: rgba(255, 255, 255, 0.1);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-light);
+    overflow: hidden;
+    cursor: none;
+}
+
+#three-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #0a0a0e; /* Base gelap */
+    /* Tambahkan efek gradien halus sebagai overlay */
+    background: linear-gradient(135deg, #0a0a0e 0%, #1a1b24 100%);
+    
+    /* Efek bintik-bintik atau tekstur, seperti debu kosmik */
+    /* Ganti URL dengan gambar tekstur noise berukuran kecil */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="0.05"/></svg>');
+}
+
+/* Pastikan canvas tetap berada di dalam #three-wrap dan tidak memiliki background sendiri */
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    mix-blend-mode: screen; /* Opsi, untuk interaksi yang menarik dengan background */
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+#ui-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3vw; /* Use viewport units */
+    box-sizing: border-box;
+    color: white;
+}
+
+header, footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: opacity 0.5s ease;
+}
+
+header.hidden, footer.hidden {
+    opacity: 0;
+}
+
+header .role {
+    color: var(--text-dim);
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* Article Panel */
+#article-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 88888;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#article-panel.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.article-content {
+    width: 90%;
+    overflow: hidden;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    padding: 3rem;
+    box-sizing: border-box;
+    transform: scale(0.95);
+    transition: transform 0.5s ease;
+}
+
+#article-panel.visible .article-content {
+    transform: scale(1);
+}
+
+.article-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-light);
+}
+
+.article-content .kicker {
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.article-content h4 {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 0.5rem;
+    margin: 2rem 0 1rem 0;
+}
+
+.article-content p {
+    color: var(--text-dim);
+    line-height: 1.8;
+}
+
+.article-content .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.article-content .tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.article-image-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 4px;
+    background: #111;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.article-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#close-article-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    border-radius: 50%;
+    color: var(--text-light);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#close-article-btn:hover {
+    background: var(--panel-border);
+    transform: rotate(90deg);
+}
+
+/* Style untuk Panel Sertifikasi */
+#cert-panel {
+    background-color: rgba(10, 20, 30, 0.9);
+    color: #fff;
+    border: 1px solid #ffaa00;
+}
+
+#cert-panel .cert-content a {
+    color: #ffaa00;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#cert-panel .cert-content a:hover {
+    color: #fff;
+}
+
+/* Style untuk label sertifikat yang menyebar */
+.cert-label {
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    pointer-events: auto; /* Agar bisa diklik */
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 0;
+}
+
+.cert-label:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.cert-label.visible {
+    opacity: 1;
+}
+
+
+#about-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#about-panel.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.about-content {
+    width: 90%;
+    max-width: 800px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    padding: 3rem;
+    box-sizing: border-box;
+    transform: scale(0.95);
+    transition: transform 0.5s ease;
+}
+
+#about-panel.visible .about-content {
+    transform: scale(1);
+}
+
+.about-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.about-header img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+}
+
+.about-header h2 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.about-header .kicker {
+    font-size: 1rem;
+    color: var(--text-dim);
+}
+
+.about-body h4 {
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+}
+
+.about-body p {
+    line-height: 1.8;
+    color: var(--text-dim);
+}
+.about-body pre {
+    line-height: 1.8;
+    color: var(--text-dim);
+}
+
+#close-about-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    border-radius: 50%;
+    color: var(--text-light);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#close-about-btn:hover { background: var(--panel-border); transform: rotate(90deg); }
+
+/* Custom Cursor */
+#cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    top: 0;
+    left: 0;
+}
+
+#cursor-ring {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, width 0.3s, height 0.3s;
+    z-index: 99999;
+    animation: pulse 2s infinite ease-in-out;
+    top: 0;
+    left: 0;
+}
+
+#cursor-ring.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.5;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+/* Animated Title */
+#animated-title {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+}
+
+/* New class for top-right positioning */
+.top-right-text {
+    top: 3vh; /* Use viewport height */
+    left: auto;
+    right: 3vh; /* Use viewport height for consistent spacing */
+    transform: none; /* Override the centering transform */
+    font-size: clamp(1rem, 2.5vw, 1.5rem); /* Make font size smaller for the corner */
+}
+
+/* Audio Control Styles */
+.audio-control {
+    position: fixed;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    z-index: 100;
+    cursor: none;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.audio-control:hover {
+    transform: translateY(-50%) scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    cursor: none;
+}
+
+.audio-control.playing .audio-icon {
+    animation: audioIconPulse 2s infinite ease-in-out;
+    cursor: none;
+}
+
+.audio-control:hover .audio-icon {
+    transform: rotate(360deg);
+    cursor: none;
+}
+
+@keyframes audioIconPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    #ui-overlay {
+        padding: 5vw; /* Lebih banyak padding di mobile */
+    }
+
+    header, footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .social-links {
+        gap: 10px;
+    }
+
+    /* Sembunyikan cursor kustom di mobile */
+    #cursor-dot, #cursor-ring {
+        display: none;
+    }
+
+    /* Atur ulang posisi panel artikel agar lebih pas di mobile */
+    .article-content {
+        padding: 1.5rem;
+    }
+
+    .audio-control {
+        left: 20px;
+        width: 30px;
+        height: 30px;
+    }
+
+    #animated-title {
+        font-size: clamp(2rem, 8vw, 6rem);
+    }
+}
+
+/* --- CSS BARU UNTUK LAYAR PEMBUKA --- */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity .5s ease-out;
+    cursor: none;
+}
+
+.start-content {
+    max-width: 500px;
+}
+
+.start-content h1 {
+    font-size: 3rem;
+    color: var(--accent);
+}
+
+.start-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+}
+
+#start-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    background-color: transparent;
+    border: 2px solid var(--accent);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .3s, color .3s;
+    pointer-events: auto;
+}
+
+#start-btn:hover {
+    background-color: var(--accent);
+    color: var(--bg);
+}
+
+#start-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
