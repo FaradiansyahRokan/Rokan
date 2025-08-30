@@ -238,6 +238,8 @@ const audioOpen = document.getElementById('audio-open');
 const audioClose = document.getElementById('audio-hover');
 const audioExpand = document.getElementById('audio-expand');
 const audioIntro = document.getElementById('audio-intro');
+audioOpen.volume = 1.0;
+audioIntro.volume = 0.7;
 let isAudioUnlocked = !1;
 
 let intersectedObject = null;
